@@ -60,11 +60,8 @@ def pred_to_alpha_masks(y_pred, label_to_index, index_to_label, epsilon=1e-7):
 
         # enforce positive constraints
         if label != 'O':
-            # try:
             mask[seq_idx, :] = 0
             mask[seq_idx, label_idx] = 1
-            # except TypeError:
-                # import IPython; IPython.embed()
 
         prev_label = label
 
@@ -96,12 +93,11 @@ start = time.time()
 
 print 'Tagging...'
 with codecs.open(opts.input, 'r', 'utf-8') as f_input:
-    for count, line in enumerate(f_input):
-        if count < 1300:
-            continue
-        print(count)
+    count = 0
+    for line in f_input:
         words = line.rstrip().split()
         if line:
+            count += 1
             # Lowercase sentence
             if parameters['lower']:
                 line = line.lower()
