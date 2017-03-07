@@ -135,6 +135,7 @@ with codecs.open(opts.input, 'r', 'utf-8') as f_input:
                     f_output.write('%s%s%s%s%s\n' % (word, opts.delimiter, tag, opts.delimiter, confidence))
                 else:
                     f_output.write('%s%s%s\n' % (word, opts.delimiter, tag))
+            f_output.write('\n')
         else:
             f_output.write('\n')
         if count % 100 == 0:
