@@ -37,13 +37,12 @@ assert os.path.isfile(opts.input)
 def pred_to_alpha_masks(y_pred, label_to_index, index_to_label, epsilon=1e-7):
     """
     y_pred $\in \{0, .., n_tags-1\}^{seq_len} are the predicted tags for one example
-    We assume that only valid tag-transitions are predicted
     """
 
     masks = []
     prev_label = None
     i_label_index = None
-    mask = None
+    mask = np.ones((len(y_pred)+2, len(label_to_index)+2), dtype='float32')
     for seq_idx, label_idx in enumerate(y_pred):
         label = index_to_label[label_idx]
 
@@ -51,10 +50,9 @@ def pred_to_alpha_masks(y_pred, label_to_index, index_to_label, epsilon=1e-7):
         if prev_label is not None and prev_label != 'O' and (label == 'O' or label.startswith('B') or label.startswith('S')):
             mask[seq_idx, i_label_index] = 0
             masks.append(mask + epsilon)
-            mask = None
+            mask = np.ones((len(y_pred)+2, len(label_to_index)+2), dtype='float32')
 
         if label.startswith('B') or label.startswith('S'):
-            mask = np.ones((len(y_pred)+2, len(label_to_index)+2), dtype='float32')
             relevant_b_label = label
             i_label_index = label_to_index['I' + relevant_b_label[1:]]
 
