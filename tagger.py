@@ -42,19 +42,32 @@ def pred_to_alpha_masks(y_pred, label_to_index, index_to_label, epsilon=1e-7):
     masks = []
     prev_label = None
     i_label_index = None
+    e_label_index = None
     mask = np.ones((len(y_pred)+2, len(label_to_index)+2), dtype='float32')
     for seq_idx, label_idx in enumerate(y_pred):
         label = index_to_label[label_idx]
 
         # enforce negative constraints
         if prev_label is not None and prev_label != 'O' and (label == 'O' or label.startswith('B') or label.startswith('S')):
-            mask[seq_idx, i_label_index] = 0
+            if i_label_index is not None:
+                mask[seq_idx, i_label_index] = 0
+
+            if e_label_index is not None:
+                mask[seq_idx, e_label_index] = 0
+
             masks.append(mask + epsilon)
             mask = np.ones((len(y_pred)+2, len(label_to_index)+2), dtype='float32')
 
         if label.startswith('B') or label.startswith('S'):
             relevant_b_label = label
-            i_label_index = label_to_index['I' + relevant_b_label[1:]]
+            try:
+                i_label_index = label_to_index['I' + relevant_b_label[1:]]
+            except KeyError:
+                i_label_index = None
+            try:
+                e_label_index = label_to_index['E' + relevant_b_label[1:]]
+            except KeyError:
+                e_label_index = None
 
         # enforce positive constraints
         if label != 'O':
