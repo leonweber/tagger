@@ -1,3 +1,12 @@
+Fork of Guillaume Lample's NER tagger, which was originally presented in https://arxiv.org/abs/1603.01360 .
+This fork adds confidence estimates to the output of tagger.py, which are obtained using the constrained forward-backward algorithm introduced by http://www.aclweb.org/anthology/N04-4028 .
+
+The output format of ```tagger.py``` is changed to \<token\>\_\_O if no entity was predicted, or \<token\>\_\_\<tag\>\_\_\<confidence\> for predicted entities. Scores are per entities and a higher score generally implies a higher confidence of the model.
+
+A utility script ``` 	drop_low_score_entities.py``` is provided, which can be used to drop a certain percentage of the lowest confidence predictions to increase precision and convert the output to CoNLL format.
+
+------------------------------------
+
 ## NER Tagger
 
 NER Tagger is an implementation of a Named Entity Recognizer that obtains state-of-the-art performance in NER on the 4 CoNLL datasets (English, Spanish, German and Dutch) without resorting to any language-specific knowledge or resources such as gazetteers. Details about the model can be found at: http://arxiv.org/abs/1603.01360
