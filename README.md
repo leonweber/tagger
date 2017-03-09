@@ -5,6 +5,10 @@ The output format of ```tagger.py``` is changed to \<token\>\_\_O if no entity w
 
 A utility script ``` 	drop_low_score_entities.py``` is provided, which can be used to drop a certain percentage of the lowest confidence predictions to increase precision and convert the output to CoNLL format.
 
+Please note that for training the original version of the repository has to be used.
+
+For convenience the ```README.md``` of the forked repository is provided below.
+
 ------------------------------------
 
 ## NER Tagger
